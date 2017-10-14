@@ -16,7 +16,7 @@ def region(region=""):
     # eu-2018
     # northamerica-2018
     if (region != "europe") and (region != "north-america") and (region != ""):
-        region = "europe"
+        region = ""
 
     # if region == "north-america":
     #     season elif region=="europe": "eu" else: "north-america"
@@ -27,7 +27,7 @@ def region(region=""):
     # get_routes("UK-sky", "PARI-sky", date(2017, 10, 16), date(2017, 10, 21))
 
     # get_routes("UK", "US", date(2017, 10, 16), date(2017, 10, 18))
-
+    
     return render_template('region.html', region=region, events=events)
 
 @app.route('/auth/login')
