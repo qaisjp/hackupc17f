@@ -32,7 +32,7 @@ def request_events(season):
         index = event_head.find("<")
         event_head = event_head[:index]
 
-        event_date = str(event_for.find_all('p'))
+        event_date = event_for.find_all('p')
         dates = event_for.find_all('meta')
         start_date = datetime.strptime(dates[0]['content'], "%Y-%m-%d").date()
         end_date = datetime.strptime(dates[1]['content'], "%Y-%m-%d").date()
@@ -66,6 +66,7 @@ def request_events(season):
         event["name"] = event_head
         event["location"] = event_loc
         event["start_date"] = start_date
+        event["time"] = event_date[0].getText()
         event["end_date"] = end_date
         event["link"] = link
         event["logo"] = logo
