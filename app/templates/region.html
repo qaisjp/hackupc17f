@@ -115,7 +115,17 @@
           $("#target-location").text(targL)
           $("#target-name").text($(e.target).data("name"))
           $("#target-time").text($(e.target).data("time"))
-          $("#real-content").html("Loading...")
+          $("#real-content").html(` <div class="preloader-wrapper small active">
+    <div class="spinner-layer spinner-green-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>`)
 
           let urlR = '/to/{{ request.args.get("s_id") }}/'+encodeURIComponent(targL)
 
