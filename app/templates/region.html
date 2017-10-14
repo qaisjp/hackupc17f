@@ -30,8 +30,14 @@
       <nav>
         <div class="nav-wrapper">
           <div class="logo-fonts" style="background-color:black;color:white;padding:20px; text-align: center; font-size: 40pt;">
-            <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Select region</a>
-            GetYourAssHacking.com
+              {% if region == "" %}
+            <a class='dropdown-button btn' href='#' data-activates='dropdown1'>All regions</a>
+              {% elif region == "europe" %}
+              <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Europe</a>
+              {% else %}
+              <a class='dropdown-button btn' href='#' data-activates='dropdown1'>North America</a>
+              {% endif %}
+              Get Your Ass to a Hack!
           </div>
         </div>
       </nav>
@@ -48,7 +54,6 @@
               <p>{{ hack.time }}</p>
             </div>
             <div class="card-action">
-              <a class="waves-effect waves-light btn" href="#">Find Team</a>
               <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Find Journey</a>
             </div>
           </div>
@@ -76,9 +81,9 @@
         </div>
       </div>
       <ul id='dropdown1' class='dropdown-content'>
-        <li><a href="#!">Europe</a></li>
-        <li><a href="#!">North America</a></li>
-        <li><a href="#!">View all</a></li>
+        <li><a href="/region/europe">Europe</a></li>
+        <li><a href="/region/north-america">North America</a></li>
+        <li><a href="/region">View all</a></li>
       </ul>
       
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
