@@ -5,14 +5,14 @@ import requests, time
 import urllib
 import datetime
 
-app = Flask(__name__)
 year = str(datetime.date.today().year)
 
-def request_stuff(season, events):
+def request_events(season):
     mlh_url = "https://mlh.io/seasons/%s/events" % (season)
     mlh_html = requests.get(mlh_url)
-    soup = BeautifulSoup(mlh_html.content)
+    soup = BeautifulSoup(mlh_html.content, "lxml")
     event_list = soup.find_all('div', {'class':'col-lg-3'})
+    events = []
     for event_for in event_list:
         event_id = str(event_for)
         event_id = event_id[(event_id.find("event")+12):(event_id.find("event")+15)]
@@ -53,6 +53,7 @@ def request_stuff(season, events):
             event_loc_state = event_loc[:index]
             event_loc = event_loc_city+ ", " + event_loc_state
 
+            # create an event entry
             event = {}
             event["name"] = event_head
             event["location"] = event_loc
@@ -60,59 +61,26 @@ def request_stuff(season, events):
             event["end_date"] = end_date
             event["link"] = link
             event["logo"] = logo
-            #event["id"] = event_id
-            #event["image_bg"] = backgroundImage
+            event["id"] = event_id
+
+            # append to the event list
             events.append(event)
-                
-@app.route('/')
-def index():
-    us_event = []
-    request_stuff("s" + year, us_event)
-    eu_event = []
-    request_stuff("s"+year+"-eu", eu_event)
-    event_all = {"us_event":us_event,"eu_event":eu_event}
-    return jsonify(event_all)
 
+    # return the event list
+    return events
 
-@app.route('/<string:mlh_season>/')
-def select_season(mlh_season):
-    events_all = []
-    while True:
-        request_stuff(mlh_season, events_all)
-        return jsonify(events_all)
-        # time to wait until refresh
-        time.sleep(1800)
-
-@app.route('/event/<string:mlh_event>/')
-def search_event(mlh_event):
-    us_event = {}
-    request_stuff("s"+year, us_event)
-    eu_event = {}
-    request_stuff("s"+year+"-eu", eu_event)
-    for evnt in us_event:
-        if urllib.unquote(mlh_event.lower()) == evnt.lower():
-            return jsonify(us_event[evnt])
-        else:
-            for i in eu_event:
-                if urllib.unquote(mlh_event.lower()) == i.lower():
-                    return jsonify(eu_event[i])
-
-@app.route('/search/<string:mlh_event>/<string:key_>/')
-
-def search_by_key(mlh_event, key_):
-    us_event = []
-    request_stuff("s"+year, us_event)
-    eu_event = []
-    request_stuff("s"+year+"-eu", eu_event)
-    for evnt in us_event:
-        if urllib.unquote(mlh_event.lower()) == evnt.lower():
-            return us_event[evnt][key_]
-        else:
-            for i in eu_event:
-                if urllib.unquote(mlh_event.lower()) == i.lower():
-                    return eu_event[i][key_]
-
+def get_events(season=""):
+    if not season:
+        na_events = request_events("na-" + year)
+        eu_events = request_events("eu-" + year)
+        return na_events + eu_events
+    else:
+        return request_events(season)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=50981
-    )
+    # get all the events for eu 2018 season
+    get_events("eu-2018")
+    # get all events for north america 2018 season
+    get_events("na-2018")
+    # get both na and eu events (for 2018)
+    get_events()
