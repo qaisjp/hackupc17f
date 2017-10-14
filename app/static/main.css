@@ -11,3 +11,8 @@ body {
 	font-family: 'Orbitron', sans-serif;
 	font-size: 35pt;
 }
+
+.getting-flight {
+	font-size: 30pt;
+	font-style: italic;
+}

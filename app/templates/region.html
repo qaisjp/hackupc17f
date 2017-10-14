@@ -42,13 +42,13 @@
     </div>
     <div class="container" style="padding-top: 70px; margin-top: 0;">
       <div class="row">
-        <div class="col s12">
-          <h5>You're getting your return flight from {{ request.args.get("s_nam") }}</h5>
+        <div class="card-panel teal lighten-3 getting-flight" style="color: white; font-size:20px">
+          You're getting your return flight from {{ request.args.get("s_nam") }}. <a href="/">Change?</a>
         </div>
       </div>
       <div class="row">
         {% for hack in events %}
-        <div class="col s5 m5">
+        <div class="col s6 m6">
           <div 
               
               class="card
