@@ -71,7 +71,7 @@ def request_events(season):
         event["link"] = link
         event["logo"] = logo
         event["id"] = event_id
-        event['season'] = season
+        event['season'] = season[:2]
 
         # append to the event list
         events.append(event)
