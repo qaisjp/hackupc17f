@@ -47,6 +47,25 @@ def region(region=""):
     
     return render_template('region.html', region=region, events=events)
 
+
+# @app.route('/to/<season>/<outbound_id>/<destination>')
+@app.route('/to/<outbound_id>/<destination>')
+# def get_to(season, outbound_id, destination):
+def get_to(outbound_id, destination):
+    # if season == "na":
+    #     season = "united states"
+    # else:
+    #     season = "latvia"
+
+    locations = [destination, destination.split(',')[0], destination.split(',')[1]]
+    loc = get_location_id(destination)
+    if loc is None:
+        loc = get_location_id(destination.split(',')[0])
+        if loc is None:
+            return "Could not find any routes, sorry!" + destination
+    
+    return 'populate'
+
 @app.route('/auth/login')
 def login():
     pass

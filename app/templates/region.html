@@ -62,14 +62,14 @@
               
               "
               
-              data-name="{{ hack.name }}" data-location="{{ hack.location }}" data-time="{{ hack.time }}">
+              >
             <div class="card-content white-text" style="display:flex; justify-content: space-between">
               <div>
               <span class="card-title" ><a href="{{hack.url}}" class='white-text' style='text-decoration:underline'>{{ hack.name }}</a></span>
               <p>{{ hack.location }}</p>
               <p>{{ hack.time }}</p>
               <br>
-              <a class="waves-effect waves-light btn h-modal-trigger" href="#">Find Journey</a>
+              <a class="waves-effect waves-light btn h-modal-trigger" href="#" data-name="{{ hack.name }}" data-location="{{ hack.location }}" data-time="{{ hack.time }}">Find Journey</a>
               </div>
               <a href="{{ hack.url }}"><img src="{{ hack.logo }}" style="width: 142px"></a>
             </div>
@@ -84,7 +84,7 @@
       <div class="modal-content">
         <h4>Find flights to <span id="target-location"></span></h4>
         <h5><span id="target-name"></span>, <span id="target-time"></span></h5>
-        <div>
+        <div id="real-content">
           <p>OUTBOUND to X-CITY from PRICE</p>
           <a class="waves-effect waves-light btn" href="#" target="_blank">Buy</a>
           <p>OUTBOUND to X-CITY from PRICE</p>
@@ -110,9 +110,19 @@
 
         $(".h-modal-trigger").click(e => {
           e.preventDefault()
-          $("#target-location").text($(e.target.parentElement.parentElement).data("location"))
-          $("#target-name").text($(e.target.parentElement.parentElement).data("name"))
-          $("#target-time").text($(e.target.parentElement.parentElement).data("time"))
+          console.log('click')
+          let targL = $(e.target).data("location");
+          $("#target-location").text(targL)
+          $("#target-name").text($(e.target).data("name"))
+          $("#target-time").text($(e.target).data("time"))
+          $("#real-content").html("Loading...")
+
+          let urlR = '/to/{{ request.args.get("s_id") }}/'+encodeURIComponent(targL)
+
+          $.ajax({ url: urlR, success: function(data) {
+            $("#real-content").html(data)
+          } });
+
           $(".modal").modal("open")
         })
         
