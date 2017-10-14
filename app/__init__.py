@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template
 from datetime import date
-from .get_routes import get_routes
+# from .get_routes import get_routes
 from .mlh import get_events
 
 app = Flask(__name__)
