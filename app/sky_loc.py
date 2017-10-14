@@ -1,7 +1,15 @@
-import urllib, json
+import urllib
+import json
+
+f = open('key.txt')
+apiKey = f.read()
+f.close()
 
 def get_location_id(query):
-    link = "http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/UK/gbp/en-GB?query=" + query + "&apiKey=" + apiKey
+    link = "http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/UK/gbp/en-GB?" + urllib.parse.urlencode({
+        'query': query,
+        'apiKey': apiKey
+    })
 
    # get dictionary from URL
     with urllib.request.urlopen(link) as url:
@@ -9,9 +17,15 @@ def get_location_id(query):
 
     print(dictionary)
 
-   # get cityID
-    if dictionary["Places"][0]['PlaceId'] is None:
-        print("Error: CityID not found; got ", query)
+    if not dictionary["Places"]:
         return
-    else:
-        return dictionary["Places"][0]['PlaceId']
+
+    place = dictionary["Places"][0]
+    if place is None:
+        return
+   
+
+    if place is None:
+        return
+    
+    return (place['PlaceId'], place['PlaceName'] + ", " + place["CountryName"])
