@@ -58,11 +58,21 @@ def get_to(outbound_id, destination):
     #     season = "latvia"
 
     locations = [destination, destination.split(',')[0], destination.split(',')[1]]
-    loc = get_location_id(destination)
+    loc = None
+    i = 0
+    while loc is None:
+        loc = get_location_id(locations[i])
+        i += 1
+        if i == len(locations): break
+
     if loc is None:
-        loc = get_location_id(destination.split(',')[0])
-        if loc is None:
-            return "Could not find any routes, sorry!" + destination
+        return """
+    <div class="card red darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Uh oh.</span>
+              <p>We can't find any flights to {0}. Try another hackathon.</p>
+            </div>
+          </div>""".format(destination)
     
     (id, name) = loc
     return "Going to" + id + '=>' + name
