@@ -1,5 +1,22 @@
 from datetime import date
 
+def get_routes(out_city, return_city, reach_time, return_time):
+    return [
+        # just return objects that SkyScanner gives you
+
+        {
+            # obj1
+        },
+
+        {
+            # obj2
+        },
+
+        {
+            # obj3
+        }
+    ]
+
 def get_hacks():
     return [
         {

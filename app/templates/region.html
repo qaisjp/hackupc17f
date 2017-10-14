@@ -1,0 +1,18 @@
+<!doctype html>
+<title>Hello from Flask</title>
+{% if region == "north-america" %}
+  <h1>Hackathons in North America!</h1>
+{% elif region == "europe" %}
+  <h1>Hackathons in Europe!</h1>  
+{% else %}
+  <h1>Hackathons everywhere</h1>
+{% endif %}
+
+
+<ul>
+  {% for hack in events %}
+    <li>{{ hack }}</li>
+  {% endfor %}
+
+
+</ul>
