@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from bs4 import BeautifulSoup
-import requests, time
-import urllib
+import requests, time, base64, urllib, json
+
 from datetime import date, datetime, timedelta
 from operator import itemgetter
 
