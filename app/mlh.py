@@ -2,9 +2,10 @@ from flask import Flask, jsonify
 from bs4 import BeautifulSoup
 import requests, time
 import urllib
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
+from operator import itemgetter
 
-year = str(datetime.today().year)
+year = "2018" #str(datetime.today().year)
 
 def request_events(season):
     mlh_url = "https://mlh.io/seasons/%s/events" % (season)
@@ -33,9 +34,16 @@ def request_events(season):
 
         event_date = str(event_for.find_all('p'))
         dates = event_for.find_all('meta')
-        start_date = dates[0]['content']
-        end_date = dates[1]['content']
+        start_date = datetime.strptime(dates[0]['content'], "%Y-%m-%d").date()
+        end_date = datetime.strptime(dates[1]['content'], "%Y-%m-%d").date()
         
+        
+        delta = (start_date - datetime.now().date())
+        print(delta)
+        if delta <= timedelta(0):
+            print("Skipping " + event_head)
+            continue
+
 
         #This is for getting the city
         event_loc = str(event_for.find_all('span'))
@@ -57,11 +65,12 @@ def request_events(season):
         event = {}
         event["name"] = event_head
         event["location"] = event_loc
-        event["start_date"] = datetime.strptime(start_date, "%Y-%m-%d").date()
-        event["end_date"] = datetime.strptime(end_date, '%Y-%m-%d').date()
+        event["start_date"] = start_date
+        event["end_date"] = end_date
         event["link"] = link
         event["logo"] = logo
         event["id"] = event_id
+        event['season'] = season
 
         # append to the event list
         events.append(event)
@@ -73,7 +82,9 @@ def get_events(season=""):
     if not season:
         na_events = request_events("na-" + year)
         eu_events = request_events("eu-" + year)
-        return na_events + eu_events
+        na_events.extend(eu_events)
+        na_events.sort(key=itemgetter("start_date"))
+        return na_events
     else:
         if season == "north-america":
             season = "na-" + year
