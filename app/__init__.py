@@ -64,7 +64,8 @@ def get_to(outbound_id, destination):
         if loc is None:
             return "Could not find any routes, sorry!" + destination
     
-    return 'populate'
+    (id, name) = loc
+    return "Going to" + id + '=>' + name
 
 @app.route('/auth/login')
 def login():
