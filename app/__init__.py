@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from datetime import date
 # from .get_routes import get_routes
 from .mlh import get_events
@@ -25,7 +24,7 @@ def home():
         return render_template('index.html', error=errNotFoundLoc)
 
     (id, name) = loc
-    return render_template('index.html', error=id + " -> " + name)
+    return redirect(url_for('.region', region=request.form['region'], s_id=id, s_nam=name))
 
 
 @app.route('/region/')
