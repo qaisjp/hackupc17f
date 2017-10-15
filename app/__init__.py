@@ -72,5 +72,5 @@ def get_to(origin_id, destination, date_out, date_in):
     =""")
     print(routes)
     
-    return "Going to" + id + '=>' + name
+    return render_template('routes.html', routes=routes)
 
