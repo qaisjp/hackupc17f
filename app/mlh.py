@@ -39,9 +39,9 @@ def request_events(season):
         
         
         delta = (start_date - datetime.now().date())
-        print(delta)
+        # print(delta)
         if delta <= timedelta(0):
-            print("Skipping " + event_head)
+            # print("Skipping " + event_head)
             continue
 
 
