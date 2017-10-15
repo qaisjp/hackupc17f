@@ -105,6 +105,7 @@
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>      
       <script type="text/javascript"> $(function () {
+        var ajax = null;
         //initialize all modals
         $('.modal').modal();
 
@@ -123,17 +124,27 @@
           let end = $(e.target).data("end");
           let urlR = '/to/{{ request.args.get("s_id") }}/'+encodeURIComponent(targL) + '/'+ start + '/' + end
 
-          $.ajax({ url: urlR, success: function(data) {
+          if (ajax != null) {
+            let thing = ajax;
+            ajax = null
+            thing.abort();
+          }
+
+          ajax = $.ajax({ url: urlR, success: function(data) {
+            ajax = null
             $("#real-content").html(data)
           }, error: function() {
-            $("#real-content").html(`
-            <div class="card red darken-1">
-                <div class="card-content white-text">
-                    <span class="card-title">Uh oh.</span>
-                    <p>Something went wrong. Try again later.</p>
-                </div>
-            </div>
-            `)
+            if (ajax != null){
+              ajax = null
+              $("#real-content").html(`
+              <div class="card red darken-1">
+                  <div class="card-content white-text">
+                      <span class="card-title">Uh oh.</span>
+                      <p>Something went wrong. Try again later.</p>
+                  </div>
+              </div>
+              `)
+            }
           } });
 
           $(".modal").modal("open")
