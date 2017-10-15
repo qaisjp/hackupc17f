@@ -28,13 +28,13 @@
         >
           <div class="card-content white-text" style="display:flex; justify-content: space-between">
             <div>
-              <span class="card-title" ><a href="{{hack.link}}" class='white-text' style='text-decoration:underline'>{{ hack.name }}</a></span>
+              <span class="card-title" ><a href="{{hack.link}}" target="_blank" class='white-text' style='text-decoration:underline'>{{ hack.name }}</a></span>
               <p>{{ hack.location }}</p>
               <p>{{ hack.time }}</p>
               <br>
               <a class="waves-effect waves-light btn h-modal-trigger" href="#" data-name="{{ hack.name }}" data-location="{{ hack.location }}" data-time="{{ hack.time }}" data-start="{{ hack.start_text }}" data-end="{{hack.end_text}}">Find Journey</a>
             </div>
-            <a href="{{ hack.link }}"><img src="{{ hack.logo }}" style="width: 142px"></a>
+            <a href="{{ hack.link }}" target="_blank"><img src="{{ hack.logo }}" style="width: 142px"></a>
           </div>
         </div>
       </div>
