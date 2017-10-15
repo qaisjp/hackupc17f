@@ -25,25 +25,25 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
-  <body>
+  <body style="background: url('/static/diagmonds-light.png'); background-attachment: fixed;">
     <div class="navbar-fixed">
       <nav>
         <div class="nav-wrapper logo-fonts" style="background-color:black;color:white;padding:20px;height:100px; text-align: center;">
           <a href="/">Get Your Ass to a Hack!</a>
-          {% if region == "" %}
-          <a class='dropdown-button btn' href='#' data-activates='dropdown1'>All regions</a>
-            {% elif region == "europe" %}
-            <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Europe</a>
-            {% else %}
-            <a class='dropdown-button btn' href='#' data-activates='dropdown1'>North America</a>
-            {% endif %}
         </div>
       </nav>
     </div>
     <div class="container" style="padding-top: 70px; margin-top: 0;">
       <div class="row">
-        <div class="card-panel teal lighten-3 getting-flight" style="color: white; font-size:20px">
-          You're getting your return flight from {{ request.args.get("s_nam") }}. <a href="/">Change?</a>
+        <div class="card-panel teal lighten-3 getting-flight" style="color: rgb(255, 255, 255); font-size:20px">
+          You're getting your return flight from {{ request.args.get("s_nam") }}. <a href="/" style="color: teal; text-decoration:underline">Change?</a>
+          {% if region == "" %}
+          <a class='dropdown-button btn' href='#' style="float: right;" data-activates='dropdown1'>All regions<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
+            {% elif region == "europe" %}
+            <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>Europe<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
+            {% else %}
+            <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>North America<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
+            {% endif %}
         </div>
       </div>
       <div class="row">
