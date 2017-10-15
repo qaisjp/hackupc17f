@@ -57,6 +57,7 @@ def get_routes(origin_id, destination_id, date_out, date_in):
 
 
     itineraries = json['Itineraries']
+    agents = json['Agents']
 
     result = []
     flights_itineraries = itineraries[0]
@@ -67,9 +68,17 @@ def get_routes(origin_id, destination_id, date_out, date_in):
         for index, flight in enumerate(pricing_options):
             flight_price = pricing_options[index]['Price']
             flight_url = pricing_options[index]['DeeplinkUrl']
+            agent = get_agent(agents, pricing_options[index]['Agents'][0])
+            if agent is None:
+                continue
 
-            entry = {'price': flight_price, 'url': flight_url}
+            entry = {'price': flight_price, 'url': flight_url, 'agent': agent}
             result.append(entry)
 
     # Get the top 3 results
     return result[:3]
+
+def get_agent(agents, agent_id):
+    for _, agent in enumerate(agents):
+        if agent['Id'] == agent_id:
+            return agent
