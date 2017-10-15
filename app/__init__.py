@@ -62,6 +62,17 @@ def get_to(origin_id, destination, date_out, date_in):
     (destination_id, destination_name) = loc
 
     routes = get_routes(origin_id, destination_id, date_out, date_in)
+    
+    if routes is None:
+        return """
+            <div class="card red darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Uh oh.</span>
+                    <p>We can't find any flights to {0}. Try another hackathon.</p>
+                </div>
+            </div>
+        """.format(destination)
+
     print("""
     
     

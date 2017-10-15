@@ -15,8 +15,6 @@ def get_location_id(query):
     with urllib.request.urlopen(link) as url:
         dictionary = json.loads(url.read().decode())
 
-    print(dictionary)
-
     if not dictionary["Places"]:
         return
 

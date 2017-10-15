@@ -1,6 +1,5 @@
-
 <ul class="collection">
     {% for quote in routes %}
-        <li class="collection-item"><h5>£{{ quote.price }}</h5><a href="{{ quote.link }}">get</a></li>
+        <li class="collection-item"><h5>£{{ quote.price }}</h5><a rel="nofollow" href="{{ quote.url }}">get</a></li>
     {% endfor %}
 </ul>

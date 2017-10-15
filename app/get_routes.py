@@ -9,6 +9,9 @@ f = open('key.txt')
 API_KEY = f.read()
 f.close()
 
+def error_code(code):
+    return (code > 400)
+
 def get_routes(origin_id, destination_id, date_out, date_in):
 
     session_params = {
@@ -27,20 +30,33 @@ def get_routes(origin_id, destination_id, date_out, date_in):
     }
 
     response = requests.post('http://partners.api.skyscanner.net/apiservices/pricing/v1.0', session_params)
-    link = response.headers['Location'] + "?apiKey=" + API_KEY
-    print(link)
-    time.sleep(2)
+    session_key = response.headers.get('location')
+    print("Session key", session_key)
+    if response.status_code != 201:
+        return None
 
-    request_params = {
-        'sortType': 'price',
-        'sortOrder':'asc',
-        'apiKey': API_KEY
-    }
-    flights = requests.get(link, params=session_params, headers={'Cache-Control': 'no-cache',
-                                    'accept': 'application/json'})
+    json = None
+    success = False
+    while (not error_code(response.status_code)):
+        print("POLLING")
+        response = requests.get(session_key, {
+            'apiKey': API_KEY
+        }, headers={'Cache-Control': 'no-cache'})
+        print(response.status_code, response.headers)
 
-    json_response = json.loads(flights.text)
-    itineraries = json_response['Itineraries']
+        if response.status_code == 200:
+            json = response.json()
+            if json['Status'] == 'UpdatesComplete':
+                success = True
+                break
+
+        time.sleep(.25)
+
+    if not success:
+        return None
+
+
+    itineraries = json['Itineraries']
 
     result = []
     flights_itineraries = itineraries[0]
