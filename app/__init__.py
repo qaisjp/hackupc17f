@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from datetime import date
+from datetime import date, datetime, timedelta
 from .get_routes import get_routes
 from .mlh import get_events
 from .sky_loc import get_location_id
@@ -60,6 +60,13 @@ def get_to(origin_id, destination, date_out, date_in):
         """.format(destination)
     
     (destination_id, destination_name) = loc
+
+    dateobj_out = datetime.strptime(date_out, "%Y-%m-%d").date()
+    # if it's on saturday, get it for the day before
+    if dateobj_out.weekday() == 4:
+        dateobj_out = dateobj_out - timedelta(days=1)
+        date_out = dateobj_out.strftime("%Y-%m-%d")
+
 
     routes = get_routes(origin_id, destination_id, date_out, date_in)
     
