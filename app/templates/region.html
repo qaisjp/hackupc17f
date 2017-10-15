@@ -115,17 +115,9 @@
           $("#target-location").text(targL)
           $("#target-name").text($(e.target).data("name"))
           $("#target-time").text($(e.target).data("time"))
-          $("#real-content").html(` <div class="preloader-wrapper small active">
-    <div class="spinner-layer spinner-green-only">
-      <div class="circle-clipper left">
-        <div class="circle"></div>
-      </div><div class="gap-patch">
-        <div class="circle"></div>
-      </div><div class="circle-clipper right">
-        <div class="circle"></div>
-      </div>
-    </div>
-  </div>`)
+          $("#real-content").html(` <div class="progress">
+              <div class="indeterminate"></div>
+          </div>`)
 
 
           let start = $(e.target).data("start");
