@@ -1,12 +1,16 @@
 import urllib.request
-import requests
 import json
+import requests
+from pprint import pprint
+import time
+import pdb
 
 f = open('key.txt')
 API_KEY = f.read()
 f.close()
 
 def get_routes(origin_id, destination_id, date_out, date_in):
+
     session_params = {
         'cabinclass':"Economy",
         'country':"UK",
@@ -23,9 +27,9 @@ def get_routes(origin_id, destination_id, date_out, date_in):
     }
 
     response = requests.post('http://partners.api.skyscanner.net/apiservices/pricing/v1.0', session_params)
-    print(response.status_code)
-    link = response.headers['Location'] 
+    link = response.headers['Location'] + "?apiKey=" + API_KEY
     print(link)
+    time.sleep(2)
 
     request_params = {
         'sortType': 'price',
@@ -35,24 +39,21 @@ def get_routes(origin_id, destination_id, date_out, date_in):
     flights = requests.get(link, params=session_params, headers={'Cache-Control': 'no-cache',
                                     'accept': 'application/json'})
 
-    print(flights.status_code)
-
     json_response = json.loads(flights.text)
     itineraries = json_response['Itineraries']
 
     result = []
+    flights_itineraries = itineraries[0]
 
-    print(itineraries[0])
-    if itineraries[0]:
+    if flights_itineraries:
         flights = itineraries[0]
-        for index, flight in flights:
-            pricing_options = flights['PricingOptions']
+        pricing_options = flights_itineraries['PricingOptions']
+        for index, flight in enumerate(pricing_options):
+            flight_price = pricing_options[index]['Price']
+            flight_url = pricing_options[index]['DeeplinkUrl']
 
-            flight_price = pricing_options[0]['Price']
-            flight_url = pricing_options[0]['DeeplinkUrl']
-
-            print({'price': flight_price, 'url': flight_url})
-            result.append({'price': flight_price, 'url': flight_url})
+            entry = {'price': flight_price, 'url': flight_url}
+            result.append(entry)
 
     # Get the top 3 results
-    return result
+    return result[:3]
