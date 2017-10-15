@@ -5,7 +5,7 @@
                 <h5>£{{ quote.price }} via {{ quote.agent.Name }} </h5>
                 <a rel="nofollow" target="_blank" href="{{ quote.url }}" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Buy flights</a>
             </div>
-            <img src="{{ quote.agent.ImageUrl }}">
+            <img src="{{ quote.agent.ImageUrl }}" class="agent-img">
         </li>
     {% endfor %}
 </ul>
