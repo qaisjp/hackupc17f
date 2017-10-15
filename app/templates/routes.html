@@ -3,7 +3,7 @@
         <li class="collection-item" style="display:flex; justify-content: space-between">
             <div>
                 <h5>£{{ quote.price }} via {{ quote.agent.Name }} </h5>
-                <a rel="nofollow" href="{{ quote.url }}" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Buy flights</a>
+                <a rel="nofollow" target="_blank" href="{{ quote.url }}" class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>Buy flights</a>
             </div>
             <img src="{{ quote.agent.ImageUrl }}">
         </li>

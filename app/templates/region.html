@@ -4,13 +4,13 @@
   <div class="container" style="padding-top: 70px; margin-top: 0;">
     <div class="row">
       <div class="card-panel teal lighten-3 getting-flight" style="color: rgb(255, 255, 255); font-size:20px">
-        You're getting your return flight from {{ request.args.get("s_nam") }}. <a href="/" style="color: teal; text-decoration:underline">Change?</a>
+        You're taking a return flight from {{ request.args.get("s_nam") }}. <a href="/" style="color: teal; text-decoration:underline">Change?</a>
         {% if region == "" %}
-        <a class='dropdown-button btn' href='#' style="float: right;" data-activates='dropdown1'>All regions<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
+        <a class='dropdown-button btn' href='#' style="float: right;" data-activates='dropdown1'>hackathons in All regions<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
           {% elif region == "europe" %}
-          <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>Europe<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
+          <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>hackathons in Europe<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
           {% else %}
-          <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>North America<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
+          <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>hackathons in North America<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
           {% endif %}
       </div>
     </div>
