@@ -63,11 +63,11 @@ def get_to(origin_id, destination, date_out, date_in):
 
     dateobj_out = datetime.strptime(date_out, "%Y-%m-%d").date()
     # if it's on saturday, get it for the day before
-    if dateobj_out.weekday() == 4:
+    if dateobj_out.weekday() == 5:
         dateobj_out = dateobj_out - timedelta(days=1)
         date_out = dateobj_out.strftime("%Y-%m-%d")
 
-
+    print(dateobj_out.weekday(), date_out, date_in)
     routes = get_routes(origin_id, destination_id, date_out, date_in)
     
     if routes is None:
