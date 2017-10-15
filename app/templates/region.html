@@ -1,155 +1,118 @@
-<!-- {% if region == "north-america" %}
-  <h1>Hackathons in North America!</h1>
-{% elif region == "europe" %}
-  <h1>Hackathons in Europe!</h1>  
-{% else %}
-  <h1>Hackathons everywhere</h1>
-{% endif %}
-
-
-<ul>
-  {% for hack in events %}
-    <li>{{ hack.start_date }} ({{hack.season}})</li>
-  {% endfor %}
-</ul> -->
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Orbitron:700" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link type="text/css" rel="stylesheet" href="/static/main.css">
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  </head>
-  <body style="background: url('/static/diagmonds-light.png'); background-attachment: fixed;">
-    <div class="navbar-fixed">
-      <nav>
-          <div class="logo-fonts" style="background-color:black;color:white;padding:20px; text-align: center; font-size: 40pt;">
-          <a href="/">Get Your Ass to a Hack!</a>
-        </div>
-      </nav>
-    </div>
-    <div class="container" style="padding-top: 70px; margin-top: 0;">
-      <div class="row">
-        <div class="card-panel teal lighten-3 getting-flight" style="color: rgb(255, 255, 255); font-size:20px">
-          You're getting your return flight from {{ request.args.get("s_nam") }}. <a href="/" style="color: teal; text-decoration:underline">Change?</a>
-          {% if region == "" %}
-          <a class='dropdown-button btn' href='#' style="float: right;" data-activates='dropdown1'>All regions<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
-            {% elif region == "europe" %}
-            <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>Europe<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
-            {% else %}
-            <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>North America<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
-            {% endif %}
-        </div>
+{% extends "layout.html" %}
+{% block body %}
+  {{ super() }}
+  <div class="container" style="padding-top: 70px; margin-top: 0;">
+    <div class="row">
+      <div class="card-panel teal lighten-3 getting-flight" style="color: rgb(255, 255, 255); font-size:20px">
+        You're getting your return flight from {{ request.args.get("s_nam") }}. <a href="/" style="color: teal; text-decoration:underline">Change?</a>
+        {% if region == "" %}
+        <a class='dropdown-button btn' href='#' style="float: right;" data-activates='dropdown1'>All regions<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
+          {% elif region == "europe" %}
+          <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>Europe<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
+          {% else %}
+          <a class='dropdown-button btn' href='#' style="float: right" data-activates='dropdown1'>North America<i class="large material-icons right" style="font-size:30px">dehaze</i></a>
+          {% endif %}
       </div>
-      <div class="row">
-        {% for hack in events %}
-        <div class="col s6 m6">
-          <div 
-              
-              class="card
-              {% if hack.season == 'eu' %}
-                teal
-                darken-2
-              {% else %}
-                blue-grey
-                darken-1
-              {% endif %}
-              
-              "
-              
-              >
-            <div class="card-content white-text" style="display:flex; justify-content: space-between">
-              <div>
+    </div>
+    <div class="row">
+      {% for hack in events %}
+      <div class="col s6 m6">
+        <div  
+            class="card
+            {% if hack.season == 'eu' %}
+              teal
+              darken-2
+            {% else %}
+              blue-grey darken-1
+            {% endif %}"
+        >
+          <div class="card-content white-text" style="display:flex; justify-content: space-between">
+            <div>
               <span class="card-title" ><a href="{{hack.url}}" class='white-text' style='text-decoration:underline'>{{ hack.name }}</a></span>
               <p>{{ hack.location }}</p>
               <p>{{ hack.time }}</p>
               <br>
               <a class="waves-effect waves-light btn h-modal-trigger" href="#" data-name="{{ hack.name }}" data-location="{{ hack.location }}" data-time="{{ hack.time }}" data-start="{{ hack.start_text }}" data-end="{{hack.end_text}}">Find Journey</a>
-              </div>
-              <a href="{{ hack.url }}"><img src="{{ hack.logo }}" style="width: 142px"></a>
             </div>
+            <a href="{{ hack.url }}"><img src="{{ hack.logo }}" style="width: 142px"></a>
           </div>
         </div>
-        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Find flights to <span id="target-location"></span></h4>
+      <h5><span id="target-name"></span>, <span id="target-time"></span></h5>
+      <div id="real-content"></div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
       </div>
     </div>
+    <ul id='dropdown1' class='dropdown-content'>
+      <li><a href="{{ url_for('.region', region='europe', s_id=request.args.get('s_id'), s_nam=request.args.get('s_nam')) }}">Europe</a></li>
+      <li><a href="{{ url_for('.region', region='north-america', s_id=request.args.get('s_id'), s_nam=request.args.get('s_nam')) }}">North America</a></li>
+      <li><a href="{{ url_for('.region', region='', s_id=request.args.get('s_id'), s_nam=request.args.get('s_nam')) }}">View all</a></li>
+    </ul>
+  </div>
+{% endblock %}
 
-    <!-- Modal Structure -->
-    <div id="modal1" class="modal">
-      <div class="modal-content">
-        <h4>Find flights to <span id="target-location"></span></h4>
-        <h5><span id="target-name"></span>, <span id="target-time"></span></h5>
-        <div id="real-content">
-          <p>OUTBOUND to X-CITY from PRICE</p>
-          <a class="waves-effect waves-light btn" href="#" target="_blank">Buy</a>
-          <p>OUTBOUND to X-CITY from PRICE</p>
-          <a class="waves-effect waves-light btn" href="#" target="_blank">Buy</a>
-          <p>OUTBOUND to X-CITY from PRICE</p>
-          <a class="waves-effect waves-light btn" href="#" target="_blank">Buy</a>
-        </div>
-        <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-      </div>
-      <ul id='dropdown1' class='dropdown-content'>
-        <li><a href="{{ url_for('.region', region='europe', s_id=request.args.get('s_id'), s_nam=request.args.get('s_nam')) }}">Europe</a></li>
-        <li><a href="{{ url_for('.region', region='north-america', s_id=request.args.get('s_id'), s_nam=request.args.get('s_nam')) }}">North America</a></li>
-        <li><a href="{{ url_for('.region', region='', s_id=request.args.get('s_id'), s_nam=request.args.get('s_nam')) }}">View all</a></li>
-      </ul>
-      
-      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>      
-      <script type="text/javascript"> $(function () {
-        var ajax = null;
-        //initialize all modals
-        $('.modal').modal();
+{% block script %}
+  {{ super() }}
+  <script type="text/javascript">
+    $(function () {
+      var ajax = null;
 
-        $(".h-modal-trigger").click(e => {
-          e.preventDefault()
-          console.log('click')
-          let targL = $(e.target).data("location");
-          $("#target-location").text(targL)
-          $("#target-name").text($(e.target).data("name"))
-          $("#target-time").text($(e.target).data("time"))
-          $("#real-content").html(` <div class="progress">
-              <div class="indeterminate"></div>
-          </div>`)
+      //initialize all modals
+      $('.modal').modal();
 
-          let start = $(e.target).data("start");
-          let end = $(e.target).data("end");
-          let urlR = '/to/{{ request.args.get("s_id") }}/'+encodeURIComponent(targL) + '/'+ start + '/' + end
+      $(".h-modal-trigger").click(e => {
+        e.preventDefault()
+        console.log('click')
+        let targL = $(e.target).data("location");
+        $("#target-location").text(targL)
+        $("#target-name").text($(e.target).data("name"))
+        $("#target-time").text($(e.target).data("time"))
+        $("#real-content").html(` <div class="progress">
+        <div class="indeterminate"></div>
+        </div>`)
 
-          if (ajax != null) {
-            let thing = ajax;
-            ajax = null
-            thing.abort();
-          }
+        let start = $(e.target).data("start");
+        let end = $(e.target).data("end");
+        let urlR = '/to/{{ request.args.get("s_id") }}/'+encodeURIComponent(targL) + '/'+ start + '/' + end
 
-          ajax = $.ajax({ url: urlR, success: function(data) {
-            ajax = null
-            $("#real-content").html(data)
-          }, error: function() {
+        if (ajax != null) {
+          let thing = ajax;
+          ajax = null;
+          thing.abort();
+        }
+
+        ajax = $.ajax({
+          url: urlR,
+          success: function(data) {
+            ajax = null;
+            $("#real-content").html(data);
+          },
+          error: function() {
             if (ajax != null){
               ajax = null
               $("#real-content").html(`
               <div class="card red darken-1">
-                  <div class="card-content white-text">
-                      <span class="card-title">Uh oh.</span>
-                      <p>Something went wrong. Try again later.</p>
-                  </div>
+              <div class="card-content white-text">
+              <span class="card-title">Uh oh.</span>
+              <p>Something went wrong. Try again later.</p>
               </div>
-              `)
+              </div>
+              `);
             }
-          } });
+          }
+        });
 
-          $(".modal").modal("open")
-        })
-        
-      }); // end of document ready</script>
-    </body>
-  </html>
+        $(".modal").modal("open");
+      })
+    })
+  </script>
+{% endblock %}
