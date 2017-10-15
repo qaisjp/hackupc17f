@@ -69,7 +69,7 @@
               <p>{{ hack.location }}</p>
               <p>{{ hack.time }}</p>
               <br>
-              <a class="waves-effect waves-light btn h-modal-trigger" href="#" data-name="{{ hack.name }}" data-location="{{ hack.location }}" data-time="{{ hack.time }}">Find Journey</a>
+              <a class="waves-effect waves-light btn h-modal-trigger" href="#" data-name="{{ hack.name }}" data-location="{{ hack.location }}" data-time="{{ hack.time }}" data-start="{{ hack.start_text }}" data-end="{{hack.end_text}}">Find Journey</a>
               </div>
               <a href="{{ hack.url }}"><img src="{{ hack.logo }}" style="width: 142px"></a>
             </div>
@@ -127,10 +127,22 @@
     </div>
   </div>`)
 
-          let urlR = '/to/{{ request.args.get("s_id") }}/'+encodeURIComponent(targL)
+
+          let start = $(e.target).data("start");
+          let end = $(e.target).data("end");
+          let urlR = '/to/{{ request.args.get("s_id") }}/'+encodeURIComponent(targL) + '/'+ start + '/' + end
 
           $.ajax({ url: urlR, success: function(data) {
             $("#real-content").html(data)
+          }, error: function() {
+            $("#real-content").html(`
+            <div class="card red darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Uh oh.</span>
+                    <p>Something went wrong. Try again later.</p>
+                </div>
+            </div>
+            `)
           } });
 
           $(".modal").modal("open")

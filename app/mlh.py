@@ -66,8 +66,10 @@ def request_events(season):
         event["name"] = event_head
         event["location"] = event_loc
         event["start_date"] = start_date
-        event["time"] = event_date[0].getText()
+        event["start_text"] = dates[0]['content']
         event["end_date"] = end_date
+        event['end_text'] = dates[1]['content']
+        event["time"] = event_date[0].getText()
         event["link"] = link
         event["logo"] = logo
         event["id"] = event_id
